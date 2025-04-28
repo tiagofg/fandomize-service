@@ -3,21 +3,20 @@ import sys
 from loguru import logger
 import os
 
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()  # normaliza
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 class InterceptHandler(logging.Handler):
     """Encaminha logs da stdlib para o Loguru."""
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)  # cria .formatter etc.
+        super().__init__(*args, **kwargs)  
 
     def emit(self, record: logging.LogRecord):
-        # tradutor de nível numérico → nome reconhecido pelo Loguru
         logger_opt = logger.bind(module=record.name)
         logger_opt.log(record.levelno, record.getMessage())
 
 def configure_logging():
-    logger.remove()          # limpa handler default
-    logger.add(              # novo handler Loguru
+    logger.remove()          
+    logger.add(              
         sys.stdout,
         level=LOG_LEVEL,
         backtrace=True,
