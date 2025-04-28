@@ -1,36 +1,23 @@
-import logging
-import sys
+import logging, sys, os
 from loguru import logger
-import os
 
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 
-class InterceptHandler(logging.Handler):
-    """Encaminha logs da stdlib para o Loguru."""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)  
-
-    def emit(self, record: logging.LogRecord):
-        logger_opt = logger.bind(module=record.name)
-        logger_opt.log(record.levelno, record.getMessage())
+class Intercept(logging.Handler):
+    def emit(self, record):
+        logger.bind(module=record.name).log(record.levelno, record.getMessage())
 
 def configure_logging():
-    logger.remove()          
-    logger.add(              
+    logger.remove()
+    logger.add(
         sys.stdout,
         level=LOG_LEVEL,
         backtrace=True,
         diagnose=True,
-        format=(
-            "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
-            "<level>{level: <8}</level> | "
-            "<cyan>{name}</cyan>:<cyan>{line}</cyan> - "
-            "<level>{message}</level>"
-        ),
+        autocommit=True,       
+        format="<green>{time:HH:mm:ss.SSS}</green> | "
+               "<level>{level: <8}</level> | "
+               "<cyan>{function}</cyan>:<cyan>{line}</cyan> - "
+               "<level>{message}</level>",
     )
-
-    # Redireciona toda a stdlib para o Loguru
-    logging.basicConfig(handlers=[InterceptHandler()], level=0)
-
-# configure no import de módulo principal
-configure_logging()
+    logging.basicConfig(handlers=[Intercept()], level=0)

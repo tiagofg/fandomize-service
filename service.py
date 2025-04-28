@@ -1,83 +1,79 @@
+# service.py
 import os
 import json
 import uuid
+import sys
 from loguru import logger
-
+from functools import lru_cache
 from openai import OpenAI
+
+# --------- cliente OpenAI --------------------------------------
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 HERE = os.path.dirname(__file__)
 
-def load_prompt_map():
+# --------- lazy-load dos prompts -------------------------------
+@lru_cache(maxsize=1)
+def load_prompt_map() -> dict[str, str]:
     """
-    Carrega os mapeamentos de estilo dos arquivos JSON e retorna um dict { value: prompt }
+    Carrega (uma vez só) os mapeamentos de estilo
+    e devolve {value: prompt}.
     """
-    prompt_map = {}
-
-    for fname in [
+    prompt_map: dict[str, str] = {}
+    for fname in (
         "prompts/animations_prompts.json",
         "prompts/games_prompts.json",
         "prompts/live_actions_prompts.json",
         "prompts/others_prompts.json",
-    ]:
+    ):
         path = os.path.join(HERE, fname)
-
         if not os.path.exists(path):
-            raise FileNotFoundError(
-                f"Arquivo de prompts não encontrado: {path}")
+            raise FileNotFoundError(f"Arquivo de prompts não encontrado: {path}")
+        with open(path, encoding="utf-8") as f:
+            for entry in json.load(f):
+                prompt_map[entry["value"]] = entry["prompt"]
 
-        with open(path, "r", encoding="utf-8") as f:
-            entries = json.load(f)
-
-        for entry in entries:
-            prompt_map[entry["value"]] = entry["prompt"]
-
+    logger.success("Prompts carregados: {}", len(prompt_map))
     return prompt_map
 
 
-PROMPT_MAP = load_prompt_map()
-
+# --------- exceções de domínio --------------------------------
 class InvalidStyleError(Exception):
-    """Lançada quando o image_style não está no mapeamento"""
-    pass
+    """Lançada quando o image_style não está no mapeamento."""
+
 
 class EmptyUrlError(Exception):
-    """Lançada quando a URL retornada pela API de edição é vazia"""
-    pass
+    """Lançada quando a API não retorna imagem."""
 
-async def process_image(file_obj, filename: str, image_style: str, additional_details: str) -> str:
-    """
-    Processa a imagem:
-    - Valida o image_style
-    - Salva a imagem em disco temporariamente
-    - Usa GPT-4.1-mini para combinar o prompt base e detalhes adicionais
-    - Chama openai.Image.create_edit com o prompt final
-    - Retorna a URL da imagem editada
-    """
-    base_prompt = PROMPT_MAP.get(image_style)
 
+# --------- função principal -----------------------------------
+async def process_image(
+    file_obj,
+    filename: str,
+    image_style: str,
+    additional_details: str,
+) -> str:
+    prompt_map = load_prompt_map()           # garante que log ocorra na invocação
+    base_prompt = prompt_map.get(image_style)
     if base_prompt is None:
-        valid = ", ".join(PROMPT_MAP.keys())
-        raise InvalidStyleError(
-            f"Estilo '{image_style}' não reconhecido. Valores válidos: {valid}"
-        )
+        valid = ", ".join(prompt_map)
+        raise InvalidStyleError(f"Estilo “{image_style}” inválido. Válidos: {valid}")
 
     tmp_path = f"/tmp/{uuid.uuid4().hex}_{filename}"
     file_obj.seek(0)
-
     with open(tmp_path, "wb") as out:
         out.write(file_obj.read())
 
     try:
+        # -------- construir prompt via chat --------------------
         system_msg = (
-            "Você é um assistente que recebe um prompt de estilo de arte e detalhes adicionais, "
-            "e retorna um prompt único em Inglês, pronto para ser usado na API de edição de imagens."
+            "Você é um assistente que recebe um prompt de estilo de arte e detalhes "
+            "adicionais e devolve um prompt único em inglês pronto para edição."
         )
-
         user_msg = (
             f"Estilo base: {base_prompt}\n"
             f"Detalhes adicionais: {additional_details}\n\n"
-            "Combine-os em um único prompt em Inglês e retorne apenas o texto do prompt final."
+            "Combine-os em um único prompt em inglês e retorne somente o prompt final."
         )
 
         response = client.chat.completions.create(
@@ -88,28 +84,26 @@ async def process_image(file_obj, filename: str, image_style: str, additional_de
             ],
             temperature=0.7,
         )
-
         final_prompt = response.choices[0].message.content.strip()
-        logger.info("Prompt final gerado: {}", final_prompt)
+        logger.info("📝 Prompt final gerado: {}", final_prompt)
 
+        # -------- chamar edição de imagem ---------------------
         with open(tmp_path, "rb") as img_f:
             edit_resp = client.images.edit(
                 model="gpt-image-1",
                 image=img_f,
                 prompt=final_prompt,
             )
+        logger.info("🎨 Resposta da edição: {}", edit_resp)
 
-        logger.info("Resposta da API de edição: {}", edit_resp)
+        base64_img = edit_resp.data[0].b64_json
+        if not base64_img:
+            raise EmptyUrlError("A API de edição não retornou imagem válida")
 
-        base_64_img = edit_resp.data[0].b64_json
-
-        if not isinstance(base_64_img, str) or not base_64_img:
-            raise EmptyUrlError("A API de edição não retornou uma imagem válida")
-
-        return base_64_img
+        return base64_img
 
     finally:
         try:
             os.remove(tmp_path)
         except OSError:
-            pass
+            logger.warning("Falha ao apagar arquivo temporário {}", tmp_path)
