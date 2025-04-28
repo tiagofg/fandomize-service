@@ -93,6 +93,7 @@ async def process_image(
                 model="gpt-image-1",
                 image=img_f,
                 prompt=final_prompt,
+                quality="medium",
             )
         logger.info("🎨 Resposta da edição: {}", edit_resp)
 
