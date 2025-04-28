@@ -90,3 +90,4 @@ typings/
 
 # Byte-compiled Cython files
 *.pyx.c
+.vercel

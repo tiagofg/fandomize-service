@@ -1,5 +1,3 @@
-import uvicorn
-
 from fastapi import FastAPI, Request, UploadFile, File, Form, HTTPException
 from loguru import logger
 from pydantic import BaseModel
@@ -19,7 +17,7 @@ async def log_requests(request: Request, call_next):
         response = await call_next(request)
         logger.bind(status=response.status_code).info("↘️  response sent")
         return response
-    except Exception as exc:
+    except Exception:
         logger.exception("Unhandled error processing request")
         raise
 
@@ -27,11 +25,8 @@ async def log_requests(request: Request, call_next):
 async def edit_image(
     uploaded_image: UploadFile = File(...),
     image_style: str = Form(...),
-    additional_details: str = Form(...),
+    additional_details: str = Form(...)
 ):
-    """
-    Controller que delega a lógica para service.process_image.
-    """
     try:
         base64 = await process_image(
             uploaded_image.file,
@@ -39,7 +34,6 @@ async def edit_image(
             image_style,
             additional_details,
         )
-
     except InvalidStyleError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except EmptyUrlError as e:
@@ -50,4 +44,5 @@ async def edit_image(
     return EditResponse(image=base64)
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
