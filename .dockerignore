@@ -1,0 +1,40 @@
+# Diretórios e artefatos de build
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+build/
+dist/
+pip-wheel-metadata/
+
+# Configurações de IDE/editor
+.vscode/
+.idea/
+*.sw?
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Testes e relatórios
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+.unit_test_output/
+
+# Dados temporários e de usuário
+*.log
+.env
+*.sqlite3
+tmp/
+.cache/

@@ -1,7 +1,7 @@
 import os
 import json
 import uuid
-import openai
+from loguru import logger
 
 from openai import OpenAI
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -90,8 +90,7 @@ async def process_image(file_obj, filename: str, image_style: str, additional_de
         )
 
         final_prompt = response.choices[0].message.content.strip()
-
-        print(f"Prompt final: {final_prompt}")
+        logger.info("Prompt final gerado: {}", final_prompt)
 
         with open(tmp_path, "rb") as img_f:
             edit_resp = client.images.edit(
@@ -100,7 +99,7 @@ async def process_image(file_obj, filename: str, image_style: str, additional_de
                 prompt=final_prompt,
             )
 
-        print(edit_resp)
+        logger.info("Resposta da API de edição: {}", edit_resp)
 
         base_64_img = edit_resp.data[0].b64_json
 

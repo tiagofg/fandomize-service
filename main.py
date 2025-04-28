@@ -1,13 +1,27 @@
 import uvicorn
 
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, Request, UploadFile, File, Form, HTTPException
+from loguru import logger
 from pydantic import BaseModel
+from logger_setup import configure_logging
 from service import EmptyUrlError, process_image, InvalidStyleError
 
+configure_logging()
 app = FastAPI()
 
 class EditResponse(BaseModel):
     image: str
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.bind(path=request.url.path, method=request.method).info("↗️  request received")
+    try:
+        response = await call_next(request)
+        logger.bind(status=response.status_code).info("↘️  response sent")
+        return response
+    except Exception as exc:
+        logger.exception("Unhandled error processing request")
+        raise
 
 @app.post("/edit-image/", response_model=EditResponse)
 async def edit_image(
