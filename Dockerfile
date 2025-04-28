@@ -1,29 +1,30 @@
-# --- estágio de build --------------------------------------------------------
+# ---------- Fase de build ----------
 FROM python:3.13-alpine AS builder
 WORKDIR /app
 
-# Copie só o requirements para aproveitar o cache
+# Copiamos só o requirements para aproveitar o cache
 COPY requirements.txt .
+
+# Gera wheels em /wheels (diretório certo!)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
-    pip wheel --no-cache-dir -r requirements.txt
+    pip wheel --no-cache-dir -r requirements.txt -w /wheels
 
-# --- estágio final -----------------------------------------------------------
+# ---------- Fase final ----------
 FROM python:3.13-alpine
 WORKDIR /app
 ENV PYTHONUNBUFFERED=1 \
-    LOG_LEVEL=INFO \
-    PORT=8000
+    PORT=8000 \
+    LOG_LEVEL=INFO
 
-# Copie pacotes já “wheelados” e instale rapidinho
-COPY --from=builder /root/.cache/pip /root/.cache/pip
-RUN pip install --no-cache-dir /root/.cache/pip/*.whl
+# Copia wheels gerados e instala rapidamente sem baixar nada
+COPY --from=builder /wheels /wheels
+COPY requirements.txt .
+RUN pip install --no-cache-dir --no-index --find-links /wheels -r requirements.txt && \
+    rm -rf /wheels
 
-# Copie seu código
+# Copia o código da aplicação
 COPY . .
 
-# Exponha a porta que o Koyeb detectará
 EXPOSE ${PORT}
-
-# Comando de arranque --> saída vai para stdout
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
