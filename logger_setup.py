@@ -22,7 +22,6 @@ def configure_logging():
         level=LOG_LEVEL,
         backtrace=True,
         diagnose=True,
-        enqueue=True,
         format=(
             "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | "
             "<level>{level: <8}</level> | "
