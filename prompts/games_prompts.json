@@ -1,0 +1,42 @@
+[
+  {
+    "value": "minecraft",
+    "prompt": "Transform the uploaded image into the style of Minecraft, with blocky textures, pixelated characters, and cubic environments."
+  },
+  {
+    "value": "gta",
+    "prompt": "Transform the uploaded image into the style of GTA, with urban backdrops, gritty tones, and street-style attitude."
+  },
+  {
+    "value": "god-of-war",
+    "prompt": "Transform the uploaded image into the style of God of War, with Nordic environments, epic lighting, and mythological armor."
+  },
+  {
+    "value": "zelda-breath-of-the-wild",
+    "prompt": "Transform the uploaded image into the style of Zelda: Breath of the Wild, with cel-shaded visuals, natural scenery, and magical details."
+  },
+  {
+    "value": "red-dead-redemption",
+    "prompt": "Transform the uploaded image into the style of Red Dead Redemption, with western landscapes, cowboy outfits, and cinematic lighting."
+  },
+  {
+    "value": "hades",
+    "prompt": "Transform the uploaded image into the style of Hades, with hand-drawn art, bold colors, and stylized Greek mythology."
+  },
+  {
+    "value": "hollow-knight",
+    "prompt": "Transform the uploaded image into the style of Hollow Knight, with dark backgrounds, smooth lines, and a mysterious gothic tone."
+  },
+  {
+    "value": "cuphead",
+    "prompt": "Transform the uploaded image into the style of Cuphead, with vintage 1930s cartoon art, rubber hose animation, and grainy texture."
+  },
+  {
+    "value": "genshin-impact",
+    "prompt": "Transform the uploaded image into the style of Genshin Impact, with anime-style visuals, nature-inspired backgrounds, and ornate clothing."
+  },
+  {
+    "value": "the-last-of-us",
+    "prompt": "Transform the uploaded image into the style of The Last of Us, with worn clothing, abandoned city ruins, and a dramatic post-apocalyptic atmosphere."
+  }
+]

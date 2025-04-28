@@ -1,0 +1,42 @@
+[
+  {
+    "value": "simpsons",
+    "prompt": "Transform the uploaded image into the style of The Simpsons, with yellow skin tones, simple outlines, and cartoon family home setting."
+  },
+  {
+    "value": "bob-esponja",
+    "prompt": "Transform the uploaded image into the style of SpongeBob SquarePants, with exaggerated cartoon expressions and underwater backgrounds."
+  },
+  {
+    "value": "pixar",
+    "prompt": "Transform the uploaded image into the style of Pixar, with colorful 3D visuals, exaggerated expressions, and cinematic lighting."
+  },
+  {
+    "value": "ghibli",
+    "prompt": "Transform the uploaded image into the style of Ghibli, with dreamy and delicate art, soft colors, and hand-painted natural backgrounds."
+  },
+  {
+    "value": "turma-da-monica",
+    "prompt": "Transform the uploaded image into the style of Turma da Mônica, with round shapes, clean lines, and vibrant comic backgrounds."
+  },
+  {
+    "value": "anime-shonen",
+    "prompt": "Transform the uploaded image into the style of Shonen Anime, with sharp lines, energetic poses, and a heroic atmosphere."
+  },
+  {
+    "value": "spider-verse",
+    "prompt": "Transform the uploaded image into the style of Spider-Verse, with comic book textures, halftone shading, and vibrant action effects."
+  },
+  {
+    "value": "south-park",
+    "prompt": "Transform the uploaded image into the style of South Park, with paper-cut characters, flat shading, and absurd settings."
+  },
+  {
+    "value": "rick-and-morty",
+    "prompt": "Transform the uploaded image into the style of Rick and Morty, with angular lines, sci-fi backgrounds, and absurd humor."
+  },
+  {
+    "value": "adventure-time",
+    "prompt": "Transform the uploaded image into the style of Adventure Time, with minimalist shapes, surreal worlds, and vibrant flat colors."
+  }
+]

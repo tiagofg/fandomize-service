@@ -1,0 +1,42 @@
+[
+  {
+    "value": "harry-potter",
+    "prompt": "Transform the uploaded image into the style of Harry Potter, with magical school uniforms, wands, and mystical castle backgrounds."
+  },
+  {
+    "value": "stranger-things",
+    "prompt": "Transform the uploaded image into the style of Stranger Things, with 80s clothing, neon lighting, and eerie supernatural effects."
+  },
+  {
+    "value": "matrix",
+    "prompt": "Transform the uploaded image into the style of The Matrix, with dark tones, green digital rain, and futuristic trench coats."
+  },
+  {
+    "value": "coringa",
+    "prompt": "Transform the uploaded image into the style of Joker, with dramatic shadows, expressive makeup, and a gritty urban setting."
+  },
+  {
+    "value": "senhor-dos-aneis",
+    "prompt": "Transform the uploaded image into the style of The Lord of the Rings, with epic landscapes, natural scenery, and medieval fantasy clothing."
+  },
+  {
+    "value": "game-of-thrones",
+    "prompt": "Transform the uploaded image into the style of Game of Thrones, with a dark mood, medieval outfits, and dramatic lighting."
+  },
+  {
+    "value": "duna",
+    "prompt": "Transform the uploaded image into the style of Dune, with warm desert tones, grand compositions, and a sci-fi atmosphere."
+  },
+  {
+    "value": "blade-runner-2049",
+    "prompt": "Transform the uploaded image into the style of Blade Runner 2049, with neon lighting, fog, and dystopian cityscapes."
+  },
+  {
+    "value": "piratas-do-caribe",
+    "prompt": "Transform the uploaded image into the style of Pirates of the Caribbean, with pirate costumes, sea battles, and a cinematic atmosphere."
+  },
+  {
+    "value": "barbie",
+    "prompt": "Transform the uploaded image into the style of Barbie, with pink tones, glamorous outfits, and a pop chic aesthetic."
+  }
+]

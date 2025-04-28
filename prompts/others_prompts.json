@@ -1,0 +1,22 @@
+[
+  {
+    "value": "personagem-lego",
+    "prompt": "Transform the uploaded image into the style of a Lego minifigure character, with blocky body, cylindrical head, and claw hands."
+  },
+  {
+    "value": "funko-pop",
+    "prompt": "Transform the uploaded image into the style of a Funko Pop figure, with oversized head, black round eyes, and small cute body."
+  },
+  {
+    "value": "pixel-art",
+    "prompt": "Transform the uploaded image into an 8-bit pixel art character, in a retro game style with simplified details."
+  },
+  {
+    "value": "paper-cut",
+    "prompt": "Transform the uploaded image into a paper cut-out character, with layered paper look, soft shadows and a handmade feel."
+  },
+  {
+    "value": "hq-classica",
+    "prompt": "Transform the uploaded image into the style of classic comic books, with bold black outlines, halftone dots, and vibrant flat colors."
+  }
+]
