@@ -1,7 +1,7 @@
 import logging, sys, os
 from loguru import logger
 
-def _setup():                           # func interna
+def _setup():                           
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
     def sink_flush(msg):
         sys.stdout.write(msg)
@@ -26,6 +26,5 @@ def _setup():                           # func interna
 
     logging.basicConfig(handlers=[Intercept()], level=0)
 
-# ————— expõe a função que o index.py espera
 def configure_logging():
     _setup()
