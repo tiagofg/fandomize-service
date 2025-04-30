@@ -35,10 +35,13 @@ async def edit_image(
             additional_details,
         )
     except InvalidStyleError as e:
+        logger.error(f"Estilo inválido: {e}")
         raise HTTPException(status_code=400, detail=str(e))
     except EmptyUrlError as e:
+        logger.error(f"Erro ao processar imagem: {e}")
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
+        logger.error(f"Erro interno: {e}")
         raise HTTPException(status_code=500, detail=f"Erro interno: {e}")
 
     return EditResponse(image=base64)
