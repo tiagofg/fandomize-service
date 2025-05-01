@@ -4,7 +4,7 @@ from loguru import logger
 
 from app.exceptions.custom_exceptions import InvalidStyleError, EmptyUrlError
 from app.services.prompt_loader import load_prompt_map
-from app.core import settings, client
+from app.core.config import settings, client
 
 
 async def process_image(
