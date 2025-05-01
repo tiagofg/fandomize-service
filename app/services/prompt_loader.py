@@ -5,6 +5,8 @@ from functools import lru_cache
 
 HERE = os.path.dirname(__file__)
 
+PROMPT_DIR = os.path.normpath(os.path.join(HERE, os.pardir, os.pardir, "prompts"))
+
 @lru_cache(maxsize=1)
 def load_prompt_map() -> dict[str, str]:
     """
@@ -12,13 +14,14 @@ def load_prompt_map() -> dict[str, str]:
     e devolve {value: prompt}.
     """
     prompt_map: dict[str, str] = {}
+
     for fname in (
-        "/../../prompts/animations_prompts.json",
-        "/../../prompts/games_prompts.json",
-        "/../../prompts/live_actions_prompts.json",
-        "/../../prompts/others_prompts.json",
+        "animations_prompts.json",
+        "games_prompts.json",
+        "live_actions_prompts.json",
+        "others_prompts.json",
     ):
-        path = os.path.join(HERE, fname)
+        path = os.path.join(PROMPT_DIR, fname)
 
         if not os.path.exists(path):
             raise FileNotFoundError(f"Arquivo de prompts não encontrado: {path}")
