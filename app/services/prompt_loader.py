@@ -13,10 +13,10 @@ def load_prompt_map() -> dict[str, str]:
     """
     prompt_map: dict[str, str] = {}
     for fname in (
-        "prompts/animations_prompts.json",
-        "prompts/games_prompts.json",
-        "prompts/live_actions_prompts.json",
-        "prompts/others_prompts.json",
+        "/../prompts/animations_prompts.json",
+        "/../prompts/games_prompts.json",
+        "/../prompts/live_actions_prompts.json",
+        "/../prompts/others_prompts.json",
     ):
         path = os.path.join(HERE, fname)
 
