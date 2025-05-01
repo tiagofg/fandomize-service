@@ -7,7 +7,7 @@ from app.services.image_service import process_image
 
 router = APIRouter()
 
-@router.post("/edit_image", response_model=EditResponse)
+@router.post("/edit-image", response_model=EditResponse)
 async def edit_image(
     uploaded_image: UploadFile = File(...),
     image_style: str = Form(...),
