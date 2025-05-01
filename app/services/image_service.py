@@ -2,9 +2,10 @@ import os
 import uuid
 from loguru import logger
 
-from exceptions.custom_exceptions import EmptyUrlError, InvalidStyleError
-from services.prompt_loader import load_prompt_map
-from core.config import client, settings
+from app.exceptions.custom_exceptions import InvalidStyleError, EmptyUrlError
+from app.services.prompt_loader import load_prompt_map
+from app.core import settings, client
+
 
 async def process_image(
     file_obj,

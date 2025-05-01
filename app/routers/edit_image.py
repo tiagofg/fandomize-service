@@ -1,9 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from loguru import logger
 
-from exceptions.custom_exceptions import EmptyUrlError, InvalidStyleError
-from models.edit_response import EditResponse
-from services.image_service import process_image
+from app.exceptions.custom_exceptions import EmptyUrlError, InvalidStyleError
+from app.models.edit_response import EditResponse
+from app.services.image_service import process_image
 
 router = APIRouter()
 
