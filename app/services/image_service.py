@@ -13,12 +13,13 @@ async def process_image(
     image_style: str,
     additional_details: str,
 ) -> str:
-    prompt_map = load_prompt_map()           
+    prompt_map = load_prompt_map()
     base_prompt = prompt_map.get(image_style)
 
     if base_prompt is None:
         valid = ", ".join(prompt_map)
-        raise InvalidStyleError(f"Estilo “{image_style}” inválido. Válidos: {valid}")
+        raise InvalidStyleError(
+            f"Estilo “{image_style}” inválido. Válidos: {valid}")
 
     tmp_path = os.path.join(settings.tmp_dir, f"{uuid.uuid4().hex}_{filename}")
     file_obj.seek(0)
@@ -58,9 +59,13 @@ async def process_image(
                 quality="medium",
             )
 
-        logger.info("🎨 Resposta da edição: {}", edit_resp)
+        resp_dict = edit_resp.to_dict()
+        for item in resp_dict.get("data", []):
+            item.pop("b64_json", None)
+
+        logger.info("🎨 Resposta da edição: {}", resp_dict)
         base64_img = edit_resp.data[0].b64_json
-        
+
         if not base64_img:
             raise EmptyUrlError("A API de edição não retornou imagem válida")
 

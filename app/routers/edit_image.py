@@ -1,24 +1,21 @@
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from loguru import logger
 
 from app.exceptions.custom_exceptions import EmptyUrlError, InvalidStyleError
+from app.models.edit_request import EditRequest
 from app.models.edit_response import EditResponse
 from app.services.image_service import process_image
 
 router = APIRouter()
 
 @router.post("/edit-image", response_model=EditResponse)
-async def edit_image(
-    uploaded_image: UploadFile = File(...),
-    image_style: str = Form(...),
-    additional_details: str = Form(...)
-):
+async def edit_image(request: EditRequest = Depends()):
     try:
         base64 = await process_image(
-            uploaded_image.file,
-            uploaded_image.filename,
-            image_style,
-            additional_details,
+            request.uploaded_image.file,
+            request.uploaded_image.filename,
+            request.image_style,
+            request.additional_details,
         )
     except InvalidStyleError as e:
         logger.error(f"Estilo inválido: {e}")
